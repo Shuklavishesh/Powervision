@@ -5,11 +5,16 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options  
 
 def test_home_sections():
+    
+    options = Options()
+    options.add_argument("--disable-notifications")
+    
     # Setup driver
     service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service)
+    driver = webdriver.Chrome(service=service,options=options)
 
     try:
         driver.get("https://www.powervisionott.com/")   # Open website
@@ -41,15 +46,15 @@ def test_home_sections():
             for i, thumb in enumerate(thumbnails):
                 src = thumb.get_attribute("src")
                 if src and "http" in src:
-                    print(f"    Thumbnail {i} loaded: {src[:60]}...")
+                    print(f"Thumbnail {i} loaded: {src[:60]}...")
                 else:
-                    print(f"    Thumbnail {i} missing src!")
+                    print(f"Thumbnail {i} missing src!")
 
             # Try clicking the first thumbnail to test video playback
             if thumbnails:
                 try:
                     thumbnails[0].click()
-                    print("   🎬 Clicked first video thumbnail")
+                    print("Hogaya Bhaiya Clicked first video thumbnail")
 
                     # Wait for video player or iframe
                     try:
@@ -59,11 +64,11 @@ def test_home_sections():
                             )
                         )
                         if video_player.is_displayed():
-                            print("    Video player opened successfully")
+                            print("Video player opened successfully")
                         else:
-                            print("    Video player not visible")
+                            print("Video player not visible")
                     except:
-                        print("    No video player detected")
+                        print("No video player detected")
 
                     # Go back to homepage
                     driver.back()
@@ -78,5 +83,3 @@ def test_home_sections():
 # Run test
 if __name__ == "__main__":
     test_home_sections()
-
-
